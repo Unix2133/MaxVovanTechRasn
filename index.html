@@ -1,230 +1,1211 @@
 <!DOCTYPE html>
-
 <html lang="ru">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Команды для бота от MaxVovaTech</title>
-<style>
-body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    background-color: #fff8dc; /* Светло-жёлтый фон */
-    margin: 0;
-    padding: 20px;
-}
-h1 {
-    color: #fff;
-    background: linear-gradient(90deg, #ffd700, #ff4500); /* Градиент жёлто-оранжевый */
-    padding: 10px 30px; /* Уменьшенная высота */
-    margin: 20px auto;
-    text-align: center;
-    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3); /* Тень текста */
-    border: 2px solid #ff8c00; /* Оранжевая рамка */
-    border-radius: 12px;
-    font-size: 2.2em; /* Немного уменьшенный текст */
-    font-weight: bold;
-    letter-spacing: 1px;
-    max-width: 80%; /* Ограничение ширины */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Тень блока */
-    transition: background 0.3s ease, transform 0.3s ease;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Справочник команд бота для Lords Mobile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+            overflow-x: auto;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .info {
+            background: #e8f4fd;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .table-container {
+            overflow-x: auto;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .table-container::after {
+            content: "↔ Прокрутите горизонтально (свайпните влево/вправо), чтобы увидеть полное описание";
+            position: absolute;
+            top: -25px;
+            left: 0;
+            background: #3498db;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 5;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 850px;
+            background-color: white;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+        /* Убираем nowrap для описания, чтобы текст переносился */
+        th:nth-child(3), td:nth-child(3) {
+            white-space: normal;
+            word-wrap: break-word;
+        }
+        th:nth-child(4), td:nth-child(4) { /* Пример - шире, без переноса */
+            white-space: nowrap;
+        }
+        /* Делаем столбцы Команды и Пример кликабельными */
+        td:nth-child(2), td:nth-child(4) {
+            cursor: pointer;
+            background-color: #f0f8ff;
+            transition: background-color 0.2s;
+            position: relative;
+            padding-right: 30px; /* Добавляем место для иконки */
+        }
+        td:nth-child(2):hover, td:nth-child(4):hover {
+            background-color: #e3f2fd;
+        }
+        /* Базовые ширины */
+        th:nth-child(1), td:nth-child(1) { /* Ранг */
+            width: 80px;
+            min-width: 80px;
+        }
+        th:nth-child(2), td:nth-child(2) { /* Команды */
+            width: 200px;
+            min-width: 200px;
+        }
+        th:nth-child(3), td:nth-child(3) { /* Описание */
+            width: 500px;
+            min-width: 500px;
+        }
+        th:nth-child(4), td:nth-child(4) { /* Пример - шире */
+            width: 200px;
+            min-width: 200px;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #e3f2fd;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        .emoji {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+        
+        /* Стили для иконки копирования */
+        .copy-icon {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.6;
+            transition: opacity 0.2s;
+            font-size: 14px;
+        }
+        td:nth-child(2):hover .copy-icon,
+        td:nth-child(4):hover .copy-icon {
+            opacity: 1;
+        }
+        
+        /* Медиа-запросы для мобильных: уменьшаем столбец ранга и команды, чтобы видно было больше описания */
+        @media (max-width: 768px) {
+            body {
+                font-size: 14px;
+            }
+            th, td {
+                padding: 4px;
+                font-size: 12px;
+            }
+            .table-container::after {
+                font-size: 10px;
+                padding: 3px 6px;
+                top: -20px;
+            }
+            /* Уменьшаем ширины для мобильных */
+            th:nth-child(1), td:nth-child(1) { /* Ранг - уменьшен */
+                width: 50px;
+                min-width: 50px;
+            }
+            th:nth-child(2), td:nth-child(2) { /* Команды - немного уменьшен */
+                width: 120px;
+                min-width: 120px;
+            }
+            th:nth-child(3), td:nth-child(3) { /* Описание - теперь видно больше без скролла */
+                width: 300px;
+                min-width: 300px;
+            }
+            th:nth-child(4), td:nth-child(4) { /* Пример - шире на мобильных */
+                width: 150px;
+                min-width: 150px;
+            }
+            table {
+                min-width: 620px; /* Общая минимальная ширина для мобильных */
+            }
+            .copy-icon {
+                font-size: 12px;
+                right: 4px;
+            }
+        }
+        /* Уведомление о копировании */
+        .copy-notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            z-index: 1000;
+            display: none;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Справочник команд бота</h1>
+    <div class="info">
+        💡 Чтобы скопировать команду или пример, просто нажмите на ячейку с ними — текст скопируется в буфер обмена, и появится уведомление.
+    </div>
 
-h1:hover {
-    transform: scale(1.03); /* Лёгкое увеличение при наведении */
-    background: linear-gradient(90deg, #ffc107, #ff6347); /* Более яркий градиент при наведении */
-}
+    <div class="section">
+        <h2 class="emoji">🎯 ОХОТА</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ранг</th>
+                        <th>Команды</th>
+                        <th>Подробное описание</th>
+                        <th>Пример</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>R1+</td>
+                        <td class="copyable" data-text="!stats">
+                            !stats
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Показывает вашу личную статистику подарков: Донат и Охота</td>
+                        <td class="copyable" data-text="!stats">
+                            !stats
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>R1+</td>
+                        <td class="copyable" data-text="!stats all">
+                            !stats all
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Общая статистика гильдии: кто сколько Потратил или убил монстров</td>
+                        <td class="copyable" data-text="!stats all">
+                            !stats all
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>R4+</td>
+                        <td class="copyable" data-text="!pstats ник">
+                            !pstats ник
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Статистика подарков конкретного игрока. Если в никнейме есть пробел, замените его на нижнее подчеркивание (_). Пример: Player_1. Если два пробела, то два подчеркивания</td>
+                        <td class="copyable" data-text="!pstats Player_123">
+                            !pstats Player_123
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!hunt x y">
+                            !hunt x y
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Наносит один удар по монстру в указанных координатах. Чтобы полностью уничтожить монстра, повторяйте команду, пока он не будет побеждён</td>
+                        <td class="copyable" data-text="!hunt 150 250">
+                            !hunt 150 250
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!hunt on/off">
+                            !hunt on/off
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Включает или выключает автоматическую охоту</td>
+                        <td class="copyable" data-text="!hunt on">
+                            !hunt on
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!busrank">
+                            !busrank
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Автоматически повышает до R2 всех, кто выполнил норму охоты. Запускается раз в цикл</td>
+                        <td class="copyable" data-text="!busrank">
+                            !busrank
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!resetstats">
+                            !resetstats
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Сбрасывает статистику охоты гильдии. Используйте перед новым циклом</td>
+                        <td class="copyable" data-text="!resetstats">
+                            !resetstats
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-h2 {
-    background-color: #ffeb99; /* Светло-жёлтый для разделов */
-    padding: 10px;
-    color: #333;
-    border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */
-    margin: 10px 0;
-}
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-ul li {
-    background: #fff8e1; /* Очень светлый жёлтый */
-    margin: 10px 0;
-    padding: 10px;
-    border: 1px solid #ffd54f; /* Ярко-жёлтая граница */
-    border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-.command {
-    color: #ff9800; /* Насыщенно-оранжевый цвет текста команд */
-    font-weight: bold;
-}
-button {
-    margin-left: 10px;
-    padding: 10px 15px;
-    background: #4CAF50; /* Однотонный зелёный фон */
-    border: none;
-    border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */
-    cursor: pointer;
-    color: #fff;
-    font-size: 14px;
-    font-weight: bold;
-    transition: transform 0.2s ease, background 0.3s ease;
-}
-button:hover {
-    transform: scale(1.1);
-    background: linear-gradient(45deg, #4CAF50, #6bcbef);
-}
-button:hover {
-    background-color: #ffa726; /* Более яркий оранжевый при наведении */
-}
-code {
-    background: #fff3e0;
-    padding: 2px 5px;
-    border-radius: 3px;
-}
-</style>
+    <div class="section">
+        <h2 class="emoji">🔰 УПРАВЛЕНИЕ ГИЛЬДИЕЙ</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ранг</th>
+                        <th>Команды</th>
+                        <th>Подробное описание</th>
+                        <th>Пример</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>R4+</td>
+                        <td class="copyable" data-text="!whitelist ник ранг">
+                            !whitelist ник ранг
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Требуется: бот с рангом R4+ Добавляет игрока в белый список с указанным рангом. Игрок автоматически попадает в автоприём гильдии. Если в никнейме есть пробел, замените его на нижнее подчеркивание (_)</td>
+                        <td class="copyable" data-text="!whitelist Player_123 R3">
+                            !whitelist Player_123 R3
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>R4+</td>
+                        <td class="copyable" data-text="!unlistwhite ник">
+                            !unlistwhite ник
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Удаляет игрока из белого списка. Если в никнейме есть пробел, замените его на нижнее подчеркивание (_)</td>
+                        <td class="copyable" data-text="!unlistwhite Player_123">
+                            !unlistwhite Player_123
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>R4+</td>
+                        <td class="copyable" data-text="!whitelist">
+                            !whitelist
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Выводит всех игроков в белом списке</td>
+                        <td class="copyable" data-text="!whitelist">
+                            !whitelist
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>R4+</td>
+                        <td class="copyable" data-text="!blacklist ник">
+                            !blacklist ник
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Требуется: бот с рангом R4+ Блокирует вход и кикает игрока из гильдии. Если в никнейме есть пробел, замените его на нижнее подчеркивание (_)</td>
+                        <td class="copyable" data-text="!blacklist Player_123">
+                            !blacklist Player_123
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>R4+</td>
+                        <td class="copyable" data-text="!unlistblack ник">
+                            !unlistblack ник
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Удаляет игрока из чёрного списка. Если в никнейме есть пробел, замените его на нижнее подчеркивание (_)</td>
+                        <td class="copyable" data-text="!unlistblack Player_123">
+                            !unlistblack Player_123
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>R4+</td>
+                        <td class="copyable" data-text="!blacklist">
+                            !blacklist
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Выводит список игроков в чёрном списке</td>
+                        <td class="copyable" data-text="!blacklist">
+                            !blacklist
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!members">
+                            !members
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Принудительно обновляет список участников. Полезно после смены гильдии</td>
+                        <td class="copyable" data-text="!members">
+                            !members
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>R4+</td>
+                        <td class="copyable" data-text="!addtitle ник титул">
+                            !addtitle ник титул
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Даёт титул игроку (если банк — регент). Если в никнейме есть пробел, замените его на нижнее подчеркивание (_)</td>
+                        <td class="copyable" data-text="!addtitle Player_123 Король">
+                            !addtitle Player_123 Король
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>R4+</td>
+                        <td class="copyable" data-text="!deltitle титул">
+                            !deltitle титул
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Удаляет указанный титул у всех игроков</td>
+                        <td class="copyable" data-text="!deltitle Король">
+                            !deltitle Король
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>R4+</td>
+                        <td class="copyable" data-text="!yell сообщение">
+                            !yell сообщение
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Отправляет сообщение в чат гильдии от имени банка</td>
+                        <td class="copyable" data-text="!yell Атака через 10 мин!">
+                            !yell Атака через 10 мин!
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>R4+</td>
+                        <td class="copyable" data-text="!clearboard">
+                            !clearboard
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Полностью очищает доску Поручения гильдии. Требуется ранг R4+ у банка</td>
+                        <td class="copyable" data-text="!clearboard">
+                            !clearboard
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>R4+</td>
+                        <td class="copyable" data-text="!purge">
+                            !purge
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Удаляет последние 50 сообщений в чате гильдии</td>
+                        <td class="copyable" data-text="!purge">
+                            !purge
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!guild тег">
+                            !guild тег
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Покидает текущую гильдию и присоединяется к новой по тегу</td>
+                        <td class="copyable" data-text="!guild AB3">
+                            !guild AB3
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-<script>
-function copyToClipboard(commandElement) {
-    try {
-        // Check for data-copy attribute or fallback to innerText
-        const command = commandElement.getAttribute('data-copy') || commandElement.innerText.replace(/[\u{1F300}-\u{1F6FF}\u{1F900}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{FE0F}]/gu, '');
-        const tempInput = document.createElement('input');
-        tempInput.value = command.trim();
-        document.body.appendChild(tempInput);
-        tempInput.select();
-        document.execCommand('copy');
-        document.body.removeChild(tempInput);
+    <div class="section">
+        <h2 class="emoji">✈ ПЕРЕМЕЩЕНИЕ</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ранг</th>
+                        <th>Команды</th>
+                        <th>Подробное описание</th>
+                        <th>Пример</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!recall all">
+                            !recall all
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Отзывает все войска банка (не включая марширующие)</td>
+                        <td class="copyable" data-text="!recall all">
+                            !recall all
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>R1+</td>
+                        <td class="copyable" data-text="!pos">
+                            !pos
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Показывает текущие координаты банка. Добавьте chat — вывод в чат</td>
+                        <td class="copyable" data-text="!pos">
+                            !pos
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!relocate X Y">
+                            !relocate X Y
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Мгновенно перемещает банк в указанные координаты. Если у банка развернуты войска, переместить нельзя. Сначала используйте !recall all или !gryphon для возврата войск. Дождитесь возвращения и повторите команду</td>
+                        <td class="copyable" data-text="!relocate 345 678">
+                            !relocate 345 678
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!relocate rand">
+                            !relocate rand
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Перемещает банк в случайную точку в текущем королевстве. Если у банка развернуты войска, переместить нельзя. Сначала используйте !recall all или !gryphon для возврата войск. Дождитесь возвращения и повторите команду</td>
+                        <td class="copyable" data-text="!relocate rand">
+                            !relocate rand
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!migrate K X Y">
+                            !migrate K X Y
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Мигрирует банк в королевство K по указанным координатам. Если у банка развернуты войска, переместить нельзя. Сначала используйте !recall all или !gryphon для возврата войск. Дождитесь возвращения и повторите команду</td>
+                        <td class="copyable" data-text="!migrate 60 876 985">
+                            !migrate 60 876 985
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!relocatekvk K">
+                            !relocatekvk K
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Случайное перемещение в королевство для КВК. Если у банка развернуты войска, переместить нельзя. Сначала используйте !recall all или !gryphon для возврата войск. Дождитесь возвращения и повторите команду</td>
+                        <td class="copyable" data-text="!relocatekvk 988">
+                            !relocatekvk 988
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!joingvg">
+                            !joingvg
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Входит в Экспедицию Гильдий. Переместить замок нельзя, если: За пределами замка есть войска, есть раненые войска, сломана стена. Что делать: Используйте !recall all или !gryphon для возврата войск, дождитесь возвращения, вылечите раненых и почините стену, повторите команду</td>
+                        <td class="copyable" data-text="!joingvg">
+                            !joingvg
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!leavegvg">
+                            !leavegvg
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Выходит из Экспедиции Гильдий. Если у банка развернуты войска, переместить нельзя. Сначала используйте !recall all или !gryphon для возврата войск. Дождитесь возвращения и повторите команду</td>
+                        <td class="copyable" data-text="!leavegvg">
+                            !leavegvg
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!joinca 1">
+                            !joinca 1
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Присоединяется к Хаос-Арене в королевстве 1. Добавьте f для принудительного входа. Переместить замок нельзя, если: За пределами замка есть войска, есть раненые войска, сломана стена. Что делать: Используйте !recall all или !gryphon для возврата войск, дождитесь возвращения, вылечите раненых и почините стену, повторите команду</td>
+                        <td class="copyable" data-text="!joinca 1 f">
+                            !joinca 1 f
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!leaveca">
+                            !leaveca
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Выходит из Хаос-Арены. Если у банка развернуты войска, переместить нельзя. Сначала используйте !recall all или !gryphon для возврата войск. Дождитесь возвращения и повторите команду</td>
+                        <td class="copyable" data-text="!leaveca">
+                            !leaveca
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!joinda">
+                            !joinda
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Входит в Арену Драконов. Переместить замок нельзя, если: За пределами замка есть войска, есть раненые войска, сломана стена. Что делать: Используйте !recall all или !gryphon для возврата войск, дождитесь возвращения, вылечите раненых и почините стену, повторите команду</td>
+                        <td class="copyable" data-text="!joinda">
+                            !joinda
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!leaveda">
+                            !leaveda
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Выходит из Арены Драконов. Если у банка развернуты войска, переместить нельзя. Сначала используйте !recall all или !gryphon для возврата войск. Дождитесь возвращения и повторите команду</td>
+                        <td class="copyable" data-text="!leaveda">
+                            !leaveda
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-        const notification = document.createElement('div');
-        notification.innerText = `Скопировано: ${command}`;
-        notification.style.position = 'fixed';
-        notification.style.top = '20px';
-        notification.style.left = '50%';
-        notification.style.transform = 'translateX(-50%)';
-        notification.style.backgroundColor = '#4CAF50';
-        notification.style.color = '#fff';
-        notification.style.padding = '10px 20px';
-        notification.style.borderRadius = '5px';
-        notification.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.2)';
-        notification.style.zIndex = '1000';
-        document.body.appendChild(notification);
-        setTimeout(() => document.body.removeChild(notification), 3000);
-    } catch (err) {
-        console.error('Ошибка при копировании:', err);
-    }
-}
-</script>
+    <div class="section">
+        <h2 class="emoji">💰 УПРАВЛЕНИЕ БАЛАНСОМ</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ранг</th>
+                        <th>Команды</th>
+                        <th>Подробное описание</th>
+                        <th>Пример</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>R1+</td>
+                        <td class="copyable" data-text="!bal">
+                            !bal
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Показывает ваш текущий баланс ресурсов в банке. Баланс — это ваш личный счёт, который вы можете использовать самостоятельно: забирать ресурсы или передавать их другим игрокам — без участия админа банка</td>
+                        <td class="copyable" data-text="!bal">
+                            !bal
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>R4+</td>
+                        <td class="copyable" data-text="!adminbal ник">
+                            !adminbal ник
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Проверяет баланс ресурсов конкретного игрока. Добавьте chat — вывод в чат. Если в никнейме есть пробел, замените его на нижнее подчеркивание (_)</td>
+                        <td class="copyable" data-text="!adminbal Player_123">
+                            !adminbal Player_123
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>R4+</td>
+                        <td class="copyable" data-text="!adminbal">
+                            !adminbal
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Показывает общий баланс всех ресурсов банка. Добавьте chat — вывод в чат</td>
+                        <td class="copyable" data-text="!adminbal или !adminbal chat">
+                            !adminbal или !adminbal chat
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>R4+</td>
+                        <td class="copyable" data-text="!adminbag">
+                            !adminbag
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Показывает ресурсы, находящиеся в сумке банка (не в балансе). Добавьте chat — вывод в чат</td>
+                        <td class="copyable" data-text="!adminbag">
+                            !adminbag
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!setbal ник тип кол-во">
+                            !setbal ник тип кол-во
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Ручная установка баланса игроку. Тип: food, wood, stone, ore, gold. Если в никнейме есть пробел, замените его на нижнее подчеркивание (_)</td>
+                        <td class="copyable" data-text="!setbal Player_123 food 1M">
+                            !setbal Player_123 food 1M
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>R4+</td>
+                        <td class="copyable" data-text="!setacc ник">
+                            !setacc ник
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Зачисляет ваш текущий баланс на счёт указанного игрока. Если в никнейме есть пробел, замените его на нижнее подчеркивание (_)</td>
+                        <td class="copyable" data-text="!setacc Player_123">
+                            !setacc Player_123
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>R1+</td>
+                        <td class="copyable" data-text="!transfer ник тип кол-во">
+                            !transfer ник тип кол-во
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Переводит указанное количество ресурса с вашего баланса. Если в никнейме есть пробел, замените его на нижнее подчеркивание (_)</td>
+                        <td class="copyable" data-text="!transfer Player_123 food 1M">
+                            !transfer Player_123 food 1M
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!setrsslimit тип кол-во">
+                            !setrsslimit тип кол-во
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Устанавливает минимальный запас ресурса. Банк не опустится ниже</td>
+                        <td class="copyable" data-text="!setrsslimit food 500k">
+                            !setrsslimit food 500k
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
+    <div class="section">
+        <h2 class="emoji">🌾 РЕСУРСЫ ПОСТАВКА</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ранг</th>
+                        <th>Команды</th>
+                        <th>Подробное описание</th>
+                        <th>Пример</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>R4+</td>
+                        <td class="copyable" data-text="!adminrss F S W O G ник">
+                            !adminrss F S W O G ник
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Выдаёт все типы ресурсов игроку от имени администратора — без вычета с личного баланса. Порядок: еда, камень, дерево, руда, золото. 0 = пропустить тип. Только R4++. Если в никнейме есть пробел, замените его на нижнее подчеркивание (_)</td>
+                        <td class="copyable" data-text="!adminrss 10M 10M 10M 0 10M Player_123">
+                            !adminrss 10M 10M 10M 0 10M Player_123
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>R4+</td>
+                        <td class="copyable" data-text="!adminfood ник кол-во">
+                            !adminfood ник кол-во
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Выдаёт указанный ресурс игроку от имени администратора — без списания с личного баланса. Если нужен другой тип — пиши вместо food: stone, wood, ore, gold. Пример: !adminstone Player 10m — выдаст 10 млн камня от банка. Если в никнейме есть пробел, замените его на нижнее подчеркивание (_)</td>
+                        <td class="copyable" data-text="!adminfood Player_123 10m">
+                            !adminfood Player_123 10m
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>R1+</td>
+                        <td class="copyable" data-text="!food 5m">
+                            !food 5m
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Выдаёт указанное количество ресурса с вашего личного баланса. Работает, если у вас достаточно ресурса на счету. Аналогично: !wood, !stone, !ore, !gold. Внимание: Это не админ-выдача — списывается с вас</td>
+                        <td class="copyable" data-text="!food 5m">
+                            !food 5m
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>R1+</td>
+                        <td class="copyable" data-text="!rss F S W O G">
+                            !rss F S W O G
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Выдаёт все типы ресурсов с вашего личного баланса. Порядок: еда, камень, дерево, руда, золото. 0 = пропустить тип. Требуется: достаточно ресурсов на вашем балансе</td>
+                        <td class="copyable" data-text="!rss 10m 0 10m 10m 10m">
+                            !rss 10m 0 10m 10m 10m
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>R1+</td>
+                        <td class="copyable" data-text="!donate тип ник кол-во">
+                            !donate тип ник кол-во
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Пожертвовать ресурсы указанному игроку. Если в никнейме есть пробел, замените его на нижнее подчеркивание (_)</td>
+                        <td class="copyable" data-text="!donate food Player_123 5m">
+                            !donate food Player_123 5m
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>R4+</td>
+                        <td class="copyable" data-text="!abort">
+                            !abort
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Отменяет все текущие поставки ресурсов</td>
+                        <td class="copyable" data-text="!abort">
+                            !abort
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="emoji">🔍 ПОИСК НА КАРТЕ</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ранг</th>
+                        <th>Команды</th>
+                        <th>Подробное описание</th>
+                        <th>Пример</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!findtile тип уровень">
+                            !findtile тип уровень
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Ищет плитку указанного типа и уровня вокруг банка. Тип: food, wood, stone, ore, gold. Добавьте chat — вывод в чат</td>
+                        <td class="copyable" data-text="!findtile food 4">
+                            !findtile food 4
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!findtile any уровень">
+                            !findtile any уровень
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Ищет любую плитку указанного уровня вокруг банка. Добавьте chat — вывод в чат</td>
+                        <td class="copyable" data-text="!findtile any 4">
+                            !findtile any 4
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!findtilelocal тип уровень">
+                            !findtilelocal тип уровень
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Ищет плитку вокруг вашего замка. Добавьте chat — вывод в чат</td>
+                        <td class="copyable" data-text="!findtilelocal food 4">
+                            !findtilelocal food 4
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!findmonster монстр уровень">
+                            !findmonster монстр уровень
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Ищет монстра указанного типа и уровня вокруг банка. Добавьте chat — вывод в чат</td>
+                        <td class="copyable" data-text="!findmonster Титан 5">
+                            !findmonster Титан 5
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!findmonster any уровень">
+                            !findmonster any уровень
+                            !findmonster any уровень
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Ищет любого монстра указанного уровня вокруг банка. Добавьте chat — вывод в чат</td>
+                        <td class="copyable" data-text="!findmonster any 25">
+                            !findmonster any 25
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!findmonsterlocal монстр уровень">
+                            !findmonsterlocal монстр уровень
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Ищет монстра вокруг вашего замка. Добавьте chat — вывод в чат</td>
+                        <td class="copyable" data-text="!findmonsterlocal Титан 5">
+                            !findmonsterlocal Титан 5
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!finddarknest уровень">
+                            !finddarknest уровень
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Ищет Бастион хаоса указанного уровня вокруг банка. Добавьте chat — вывод в чат</td>
+                        <td class="copyable" data-text="!finddarknest 3">
+                            !finddarknest 3
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!findnestlocal уровень">
+                            !findnestlocal уровень
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Ищет Бастион хаоса вокруг вашего замка. Добавьте chat — вывод в чат</td>
+                        <td class="copyable" data-text="!findnestlocal 3">
+                            !findnestlocal 3
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="emoji">🛡 ЗАЩИТА И ВОЙСКА</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ранг</th>
+                        <th>Команды</th>
+                        <th>Подробное описание</th>
+                        <th>Пример</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>R4+</td>
+                        <td class="copyable" data-text="!shield">
+                            !shield
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Показывает время окончания текущего щита</td>
+                        <td class="copyable" data-text="!shield">
+                            !shield
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>R4+</td>
+                        <td class="copyable" data-text="!shield deploy">
+                            !shield deploy
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Активирует самый длительный доступный щит из сумки</td>
+                        <td class="copyable" data-text="!shield deploy">
+                            !shield deploy
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!camp x y">
+                            !camp x y
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Отправляет лагерь без лидера на указанные координаты</td>
+                        <td class="copyable" data-text="!camp 150 250">
+                            !camp 150 250
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!campleader x y">
+                            !campleader x y
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Отправляет лагерь с лидером на указанные координаты</td>
+                        <td class="copyable" data-text="!campleader 150 250">
+                            !campleader 150 250
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!payransom">
+                            !payransom
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Оплачивает выкуп за лидера, если он находится в плену</td>
+                        <td class="copyable" data-text="!payransom">
+                            !payransom
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="emoji">🔄 ПРОЧЕЕ</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ранг</th>
+                        <th>Команды</th>
+                        <th>Подробное описание</th>
+                        <th>Пример</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>R1+</td>
+                        <td class="copyable" data-text="!quest">
+                            !quest
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Показывает статус Поручения гильдии и текущие задания</td>
+                        <td class="copyable" data-text="!quest">
+                            !quest
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!ess">
+                            !ess
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Отправляет письмо с текущим состоянием лаборатории (эссенции)</td>
+                        <td class="copyable" data-text="!ess">
+                            !ess
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!recall all">
+                            !recall all
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Отзывает все войска банка (не включая марширующие)</td>
+                        <td class="copyable" data-text="!recall all">
+                            !recall all
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>R4+</td>
+                        <td class="copyable" data-text="!buildspam кол-во скорость">
+                            !buildspam кол-во скорость
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Запускает спам строительством для Поручения гильдии или гильдийных монет</td>
+                        <td class="copyable" data-text="!buildspam 10 5">
+                            !buildspam 10 5
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>R4+</td>
+                        <td class="copyable" data-text="!buildspam stop">
+                            !buildspam stop
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Останавливает спам строительством</td>
+                        <td class="copyable" data-text="!buildspam stop">
+                            !buildspam stop
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>R4+</td>
+                        <td class="copyable" data-text="!setgather on/off">
+                            !setgather on/off
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Включает или выключает автоматический сбор ресурсов. (не работает в Царстве миражей)</td>
+                        <td class="copyable" data-text="!setgather on">
+                            !setgather on
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>R4+</td>
+                        <td class="copyable" data-text="!snowbeast">
+                            !snowbeast
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Активирует навык вьюжника (буст производства ресурсов)</td>
+                        <td class="copyable" data-text="!snowbeast">
+                            !snowbeast
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>R4+</td>
+                        <td class="copyable" data-text="!gryphon">
+                            !gryphon
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Активирует навык грифона (ускорение маршей)</td>
+                        <td class="copyable" data-text="!gryphon">
+                            !gryphon
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!stopp секунды">
+                            !stopp секунды
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Останавливает все действия банка на указанное время</td>
+                        <td class="copyable" data-text="!stopp 300">
+                            !stopp 300
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td class="copyable" data-text="!reloadacc">
+                            !reloadacc
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                        <td>Принудительно перезапускает аккаунт банка</td>
+                        <td class="copyable" data-text="!reloadacc">
+                            !reloadacc
+                            <span class="copy-icon">⧉</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Уведомление о копировании -->
+    <div id="copyNotification" class="copy-notification">Скопировано в буфер обмена!</div>
 
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const sections = document.querySelectorAll('h2');
-        sections.forEach(section => {
-            const list = section.nextElementSibling;
-            if (list && list.tagName === 'UL') {
-                list.style.display = 'none';
-                section.style.cursor = 'pointer';
-                section.addEventListener('click', () => {
-                    list.style.display = list.style.display === 'none' ? 'block' : 'none';
-                });
-            }
-        });
-    });
-    </script>
-    </head>
-    
-<body>
+        // Простой поиск по таблицам
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.createElement('input');
+            searchInput.type = 'text';
+            searchInput.placeholder = 'Поиск по командам или описанию...';
+            searchInput.style.display = 'block';
+            searchInput.style.width = '100%';
+            searchInput.style.marginBottom = '20px';
+            searchInput.style.padding = '10px';
+            document.querySelector('h1').insertAdjacentElement('afterend', searchInput);
 
-    <h1 style="background-color: #00bfff; color: black;">Команды для бота от MaxVovaTech</h1>
-    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin: 20px 0;">
-        <a href="https://t.me/+gO15epiUvJllN2Nk" target="_blank" style="width: 80%; max-width: 300px; text-align: center; padding: 10px 20px; background-color: #008000; color: white; text-decoration: none; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */">🌾 Купить ресурсы/Самоцветы/Подбор аккаунтов 💎</a>
-        <a href="https://t.me/+zQKosWaPpThiY2Ey" target="_blank" style="width: 80%; max-width: 300px; text-align: center; padding: 10px 20px; background-color: #0000ff; color: white; text-decoration: none; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */">🤖 Подключить бота 🤖</a>
-    </div>
-    
-<h2>🗂️ Общие Команды:</h2>
-<ul>
-<li><span class="command">💰!payransom</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Оплачивает выкуп за плененного лидера.</li>
-<li><span class="command">🔮!ess</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Отправляет информацию о состоянии лаборатории.</li>
-<li><span class="command">📊!stats</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Показывает вашу статистику охоты.</li>
-<li><span class="command">📊!stats all</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Показывает общую статистику и монстров гильдии.</li>
-<li><span class="command">📊!pstats [ник]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Показывает статистику подарков для указанного игрока.</li>
-<li><span class="command">📊!busrank</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Повышает ранг участников охоты до р2 если их норма выполнена на 100%.</li>
-<li><span class="command">📊!resetstats</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Сбрасывает статистику охоты гильдии.</li>
-<li><span class="command">🛡️!shield</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Проверяет статус щита.</li>
-<li><span class="command">🛡️!shield deploy</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Активирует щит!</li>
-<li><span class="command">👣!recall</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Отзывает все войска.</li>
-<li><span class="command">🤝!buildspam [количество] [скорост]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="color: black;" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Запускает спам стройкой.</li>
-<li><span class="command">❌🤝!buildspam [stop]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="color: black;" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Останавливает спам стройкой, а также отменяет активное строительство.</li>
-<li><span class="command">🏹!hunt [x] [y]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Охотится на монстра в указанных координатах.</li>
-<li><span class="command">🏹!hunt [on/off]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Включает/выключает автоматическую охоту.</li>
-<li><span class="command">🎏!addtitle [ник] [титул]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Дает титул, если банк является регентом.</li>
-<li><span class="command">❌🎏!deltitle [титул]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Удаляет указанный титул.</li>
-<li><span class="command">📒!whitelist [ник] [ранг]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Добавляет игрока в гильдию с указанным рангом.</li>
-<li><span class="command">📒!whitelist</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Показывает список игроков в белом списке.</li>
-<li><span class="command">🗑️!blacklist [ник]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="color: black;" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Добавляет игрока в черный список.</li>
-<li><span class="command">🗑️!blacklist</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Показывает список игроков в черном списке.</li>
-<li><span class="command">🗑️!unlistwhite [ник]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Удаляет игрока из белого списка.</li>
-<li><span class="command">🗑️!unlistblack [ник]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Удаляет игрока из черного списка.</li>
-<li><span class="command">📨!purge</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Очищает чат гильдии.</li>
-<li><span class="command">📩!yell [сообщение]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Отправляет сообщение в чат гильдии.</li>
-<li><span class="command">📜!quest</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Показывает статус фестиваля гильдии.</li>
-<li><span class="command">📜!clearboard</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Очищает доску фестиваля гильдии (только для р4).</li>
-<li><span class="command">👑!guild [тег]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Покидает текущую гильдию и присоединяется к новой.</li>
-<li><span class="command">⛳!camp [x] [y]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Отправляет лагерь в указанные координаты.</li>
-<li><span class="command">⛳!campleader [x] [y]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Отправляет лагерь с лидером.</li>
-<li><span class="command">🌾!setgather [on/off]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Включает/выключает сбор ресурсов.</li>
-<li><span class="command">🐼!snowbeast</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Активирует навык вьюжника.</li>
-<li><span class="command">🦅!gryphon</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Активирует навык грифона.</li>
-<li><span class="command">⛔!stop [время в секундах]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Останавливает банк на указанное время.</li>
-<li><span class="command">🔄!reloadacc</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Перезагружает аккаунт.</li>
-<li><span class="command">🔄!members</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Перезагружает список участников гильдии.</li>
-</ul>
-<h2>✈️ Перемещение банка:</h2>
-<ul>
-<li><span class="command">✈️!pos</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Отправляет вам координаты местоположения банка. Чтобы отправить координаты в чат, напишите команду с приставкой chat. Пример: <code>!pos chat</code></li>
-<li><span class="command">✈️!relocate [X] [Y]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Перемещает банк в указанное место в данном королевстве. Пример: <code>!relocate 345 678</code></li>
-<li><span class="command">✈️!relocate rand</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Перемещает банк в случайное место на карте в данном королевстве.</li>
-<li><span class="command">✈️!migrate [K] [X] [Y]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Мигрирует в указанное королевство. Пример: <code>!migrate 60 876 985</code></li>
-<li><span class="command">✈️!relocatekvk [K]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Перемещает банк в целевое королевство для КВК. Пример: <code>!relocatekvk 988</code></li>
-<li><span class="command">✈️!joingvg</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Перемещает бота в событие "Экспедиция Гильдий".</li>
-<li><span class="command">✈️!leavegvg</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Выводит бота из события "Экспедиция Гильдий".</li>
-</ul>
-<h2>🏦 Команды баланса:</h2>
-<ul>
-<li><span class="command">🏦!bal</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Показывает ваш баланс ресурсов в банке.</li>
-<li><span class="command">🏦!adminbal [ник]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Проверяет баланс ресурсов игрока.</li>
-<li><span class="command">🏦!adminbal</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Проверяет общий баланс ресурсов банка.</li>
-<li><span class="command">🏦!adminbag</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Проверяет баланс ресурсов в сумке банка.</li>
-<li><span class="command">🏦!setbal [ник] [тип] [количество]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Устанавливает баланс игроку от имени администратора.</li>
-<li><span class="command">🏦!setacc [ник]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Зачисляет весь ваш баланс в банке на счёт игрока.</li>
-<li><span class="command">🏦!transfer [ник] [тип] [количество]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Передаёт баланс определенного ресурса с вашего счета.</li>
-<li><span class="command">🏦!setrsslimit [тип] [количество]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Устанавливает лимит ресурсов, ниже которого банк не опустится.</li>
-</ul>
-<h2>🌾 Команды поставки ресурсов:</h2>
-<ul>
-<li><span class="command">🌾!adminrss [F] [S] [W] [O] [G] [ник]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Отправляет все типы ресурсов игроку от имени администратора. Пример: <code>!adminrss 5m 5m 7m 0 8m mictik</code></li>
-<li><span class="command">🌾!admin[тип] [ник] [количество]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Отправляет ресурсы игроку от имени администратора. Пример: <code>!adminfood mictik 10</code></li>
-<li><span class="command">🌾![Тип] [количество]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Отправляет вам определенный тип ресурсов с вашего баланса. Пример: <code>!food 5m</code></li>
-<li><span class="command">🌾!rss [F] [S] [W] [O] [G]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Отправляет вам все типы ресурсов с вашего баланса. Пример: <code>!rss 10m 0 10m 10m 10m</code></li>
-<li><span class="command">🌾!donate[тип] [ник] [количество]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Отправляет ресурсы с твоего баланса определенному игроку. Пример: <code>!donatefood mictik 5m</code></li>
-</ul>
-<h2>🔎 Команды Поиска:</h2>
-<ul>
-<li><span class="command">🔎!findtile [тип] [уровень]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Находит плитки определенного типа и уровня вокруг банка.</li>
-<li><span class="command">🔎!findtile any [уровень]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Находит плитки любого типа указанного уровня вокруг банка.</li>
-<li><span class="command">🔎!findtilelocal [тип] [уровень]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Находит плитки вокруг замка, который отправил команду.</li>
-<li><span class="command">🔎!findmonster [монстр] [уровень]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Находит монстров определенного имени и уровня вокруг банка.</li>
-<li><span class="command">🔎!findmonster any [уровень]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Находит монстров любого типа указанного уровня вокруг банка.</li>
-<li><span class="command">🔎!findmonsterlocal [монстр] [уровень]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Находит монстров вокруг замка, который отправил команду.</li>
-<li><span class="command">🔎!finddarknest [уровень]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Находит темные гнезда указанного уровня вокруг банка.</li>
-<li><span class="command">🔎!findnestlocal [уровень]</span><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff8c00; /* Оранжевая рамка как у заголовка */" onclick="copyToClipboard(this.previousElementSibling)" style="margin-left: 10px; padding: 5px; background-color: #add8e6; border: none; border-radius: 3px; cursor: pointer;">Копировать</button> - Находит темные гнезда вокруг замка, который отправил команду.</li>
-</ul>
-<h2>ℹ️ Дополнительные сведения:</h2>
-<ul>
-<li>⚠️ Команды поиска поддерживают возможность публиковать результаты в чате гильдии для быстрого доступа к координатам. Напишите команду с приставкой <code>chat</code> в конце команды, например: <code>!findtile food 4 chat</code>.</li>
-<li>ℹ️ Радиус поиска всех команд составляет около 70 км.</li>
-<li>✳️ Если в имени игрока есть пробел, используйте подчеркивание вместо пробела в команде, например: <code>Игрок_1</code>. Или используйте кавычки вокруг имени, например: <code>'Игрок 1'</code>.</li>
-</ul>
+            searchInput.addEventListener('input', function(e) {
+                const query = e.target.value.toLowerCase();
+                const rows = document.querySelectorAll('table tbody tr');
+                rows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    row.style.display = text.includes(query) ? '' : 'none';
+                });
+            });
+
+            // Копирование при клике
+            const copyables = document.querySelectorAll('.copyable');
+            const notification = document.getElementById('copyNotification');
+
+            copyables.forEach(el => {
+                el.addEventListener('click', function() {
+                    const text = this.getAttribute('data-text') || this.textContent.trim();
+                    navigator.clipboard.writeText(text).then(() => {
+                        notification.style.display = 'block';
+                        setTimeout(() => {
+                            notification.style.display = 'none';
+                        }, 2000);
+                    }).catch(err => {
+                        console.error('Ошибка копирования: ', err);
+                    });
+                });
+            });
+        });
+    </script>
 </body>
 </html>
